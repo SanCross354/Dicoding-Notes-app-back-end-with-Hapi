@@ -90,7 +90,7 @@ const editNoteByIdHandler = (request, h) => {
         response.code(200);
         return response;
     }
-    
+
     const response = h.response({
         status: 'fail',
         message: 'Gagal memperbarui catatan. Id tidak ditemukan',
@@ -99,5 +99,28 @@ const editNoteByIdHandler = (request, h) => {
     return response;
 };
 
+const deleteNoteByIdHandler = (request, h) => {
+    const { id } = request.params;
+
+    const index = notes.findIndex((note) => note.id === id);
+
+    if (index !== -1) {
+        notes.splice(index, 1);
+        const response = h.response({
+            status: 'success',
+            message: 'Catatan berhasil dihapus',
+        });
+        response.code(200);
+        return response;
+    }
+
+    const response = h.response({
+        status: 'fail',
+        message: 'Catatan gagal dihapus. Id tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+};
+
 //Using literal object to ease us in exporting more than one value in certain javascript file
-module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler, editNoteByIdHandler };
+module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler, editNoteByIdHandler, deleteNoteByIdHandler };
