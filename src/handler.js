@@ -23,7 +23,7 @@ const addNoteHandler = (request, h) => {
             status: 'success',
             message: 'Note added',
             data: {
-                noteId:id,
+                noteId: id,
             },
         });
         response.code(201);
@@ -39,5 +39,32 @@ const addNoteHandler = (request, h) => {
     return response;
 };
 
+const getAllNotesHandler = () => ({
+    status: 'success',
+    data: {
+        notes,
+    },
+});
+
+const getNoteByIdHandler = (request, h) => {
+    const { id } = request.params;
+    const note = notes.filter((n) => n.id === id)[0];
+
+    if (note !== undefined) {
+        return {
+            status: 'success',
+            data: {
+                note,
+            },
+        };
+    }
+    const response = h.response({
+        status: 'fail',
+        message: 'Catatan tidak ditemukan',
+    });
+    response.code(404);
+    return response;
+};
+
 //Using literal object to ease us in exporting more than one value in certain javascript file
-module.exports = { addNoteHandler };
+module.exports = { addNoteHandler, getAllNotesHandler, getNoteByIdHandler };
